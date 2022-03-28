@@ -1,51 +1,114 @@
-const nom = "Franco"
-const apell = "Lopez"
-let lib = [{nombre: "El Señor de las Moscas", autor: "William Golding"}]
-let animales = ["perro", "gato"]
-const mas = "loro"
-const nomLibro = "Fundacion"
-const nomAutor = "Isaac Asimov"
-let arrayVacio = []
+const fs = require("fs")
+let producto = {marca: "Samsung", modelo: "S22"}
+let id = 1
+let vacio = ""
 
-class usuario {
-    constructor (nombre, apellido, libro, mascota) {
-    this.nombre = nombre
-    this.apellido = apellido
-    this.libro = libro
-    this.mascota = mascota
+
+
+
+class contenedor {
+    constructor (nombreArchivo) {
+    this.nombreArchivo = nombreArchivo
+    this.arrayVacio = []
     }
 
-    getFullName() {
-        console.log(`${this.nombre} ${this.apellido}`)
-    }
-
-    addMacota(anim) {
-        this.mascota.push(anim)
-        console.log(this.mascota)
-    }
-
-    countMascotas(){
-        console.log(this.mascota.length)
-    }
-
-    addBook(nombre, autor){
-        this.libro.push({nombre, autor})
-        console.log(this.libro)
-    }
-
-    getBookNames(array){
-        for (let nom of this.libro){
-            array.push(nom.nombre)
-        }
-        console.log(array)
-    }
-
+    async save (obj){
+            try {
+                let data = await fs.promises.readFile(`./${this.nombreArchivo}`, {encoding:"utf-8"})
+                if (data){
+                    this.arrayVacio = JSON.parse(data)
+                    this.arrayVacio.push(obj)
+                    await fs.promises.writeFile(`./${this.nombreArchivo}`, JSON.stringify(this.arrayVacio.map((el) => ({...el, id: id++})),null,2), {encoding:"utf-8"})
+                    try {
+                        console.log(id-1)
+                    }catch (err){
+                        console.log("error")
+                    }
+                }else{
+                    this.arrayVacio.push(obj)
+                    await fs.promises.writeFile(`./${this.nombreArchivo}`, JSON.stringify(this.arrayVacio.map((el) => ({...el, id: id++})),null,2), {encoding:"utf-8"})
+                    try {
+                        console.log(id-1)
+                    }catch (err){
+                        console.log("error")
+                    }
+                } 
+            }catch (err) {
+                console.log("error")
+            }     
 }
 
-const usuario1 = new usuario(nom, apell, lib, animales)
+    
+    async getById(id) {
+            try {
+                
+                let data = JSON.parse(await fs.promises.readFile(`./${this.nombreArchivo}`, {encoding:"utf-8"}))
+                if (data) {
+                    let productoId = data.find(x => {return x.id == id})
+                    if (productoId) {
+                        console.log(productoId)
+                    }else{
+                        console.log("Null")
+                    }
+                }
+                
+            }
+            catch(err){
+                console.log("Error")
+            }
+        }
+         
+    
 
-usuario1.getFullName()
-usuario1.addMacota(mas)
-usuario1.countMascotas()
-usuario1.addBook(nomAutor,nomLibro)
-usuario1.getBookNames(arrayVacio)
+    async getAll(){
+            try {
+                let array = JSON.parse(await fs.promises.readFile(`./${this.nombreArchivo}`, {encoding:"utf-8"}))
+                console.log(array) 
+            }
+            catch(err){
+                console.log("Error")
+            }
+        }
+        
+    
+
+    async deleteById(id){
+        try {        
+            let data = JSON.parse(await fs.promises.readFile(`./${this.nombreArchivo}`, {encoding:"utf-8"}))
+            if (data) {
+                let nuevaData = data.filter(x => {return x.id != id})
+                await fs.promises.writeFile(`./${this.nombreArchivo}`, (JSON.stringify(nuevaData,null,2)), {encoding:"utf-8"})
+                    try {
+                        console.log("Producto eliminado")
+                    }catch (err){
+                        console.log("error")
+                    }
+            }   
+        }
+        catch(err){
+            console.log("Error")
+        }
+    }
+
+    async deleteAll(){
+        try {
+            await fs.promises.writeFile(`./${this.nombreArchivo}`, vacio, {encoding:"utf-8"})
+            console.log("Archivo Vaciado") 
+        }
+        catch(err){
+            console.log("Error")
+        }
+    }
+    
+}
+
+
+
+
+const contenedor1 = new contenedor("productos.json")
+
+contenedor1.save(producto)
+//contenedor1.getById(3)
+//contenedor1.getAll()
+//contenedor1.deleteById(3)
+//contenedor1.deleteAll()
