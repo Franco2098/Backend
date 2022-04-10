@@ -8,5 +8,10 @@
     "marca": "Samsung",
     "modelo": "S22",
     "id": 2
+  },
+  {
+    "marca": "Samsung",
+    "modelo": "S22",
+    "id": 3
   }
 ]
