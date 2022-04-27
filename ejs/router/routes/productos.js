@@ -9,7 +9,7 @@ let arrayProductos = [];
 
 router.get('/productos', (req, res) => {
     if (arrayProductos.length != 0){
-    res.send({data: arrayProductos});
+    res.render("products", {data: arrayProductos});
     }else{
         res.send("No hay productos");
     }
@@ -32,11 +32,11 @@ router.post("/productos", (req, res) => {
     if (arrayProductos.length == 0){
         arrayProductos.push(req.body);
         arrayProductos = arrayProductos.map((el) => ({...el, id:1}));
-        res.send(arrayProductos[arrayProductos.length -1]);
+        res.render("formulario")
     }else{
         arrayProductos.push(req.body);
         arrayProductos = arrayProductos.map((el) => ({...el, id: id++}));
-        res.send(arrayProductos[arrayProductos.length -1]);
+        res.render("formulario")
         id = 1;
     }   
 })
