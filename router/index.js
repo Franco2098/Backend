@@ -35,16 +35,12 @@ io.on("connection", (socket) =>{
 
     socket.on("dataChat", (data) =>{
     save("mensajes.json", arrayMensajes, data, "mensaje")
-    //arrayMensajes.push(data);
     io.sockets.emit("mensaje",arrayMensajes);
-    //save("mensajes.json", arrayMensajes, data)
     });
 
     socket.on("dataProduct", (data) =>{
         save("producto.json", arrayProductos, data, "productos")
-        //arrayProductos.push(data);
         io.sockets.emit("productos",arrayProductos);
-        //save("producto.json", arrayProductos, data)
     });
 })
 
