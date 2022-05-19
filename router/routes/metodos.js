@@ -1,28 +1,22 @@
+const knex = require("../db")
+
 class contenedor {
-    constructor () {
-    
+    constructor (tabla) {
+        this.tabla = tabla
     }
 
-    async save (obj, knex){
-            let objNew = {
-                name: obj.name,
-                price: obj.price,
-                thumbnail: obj.thumbnail
-            };
-
-            knex("productos")
-                .insert(objNew)
-                .then(()=> {
-                    console.log("Register ok");
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+    async save (obj){
+        try {
+            await knex(this.tabla)
+                .insert(obj)
+        }        
+        catch(err){
+            console.log("error")
             }
+    }
 
-
-    async getById(id, knex, res) {
-            knex.from("productos").select("*").where({id: id})
+    async getById(id, res) {
+            knex.from(this.tabla).select("*").where({id: id})
             .then((json)=> {
                 res.send(json)
             })
@@ -33,8 +27,8 @@ class contenedor {
 
 
 
-    async getAll(knex, res){
-        knex.from("productos").select("*")
+    async getAll(res){
+        knex.from(this.tabla).select("*")
         .then((json)=> {
             res.send(json)
         })
@@ -45,8 +39,8 @@ class contenedor {
 
 
 
-    async deleteById(id, knex, res){
-        knex("productos")
+    async deleteById(id, res){
+        knex(this.tabla)
         .where({id: id})
         .del()
         .then(()=> {
@@ -57,8 +51,8 @@ class contenedor {
         });
     }
 
-    async deleteAll(knex, res){
-        knex("productos")
+    async deleteAll(res){
+        this.knex(this.tabla)
         .del()
         .then(()=> {
             res.send({ message: "All Users Deleted"})

@@ -4,7 +4,8 @@ const app = express();
 
 const contenedor = require("./routes/metodos.js")
 
-const contenedor2 = new contenedor("productos.json")
+const contenedor2 = new contenedor("mensajes")
+const contenedor1 = new contenedor("productos")
 
 const knex = require("./db")
 
@@ -34,28 +35,15 @@ const {Server} = require("socket.io");
 const io = new Server(server);
 
 io.on("connection", (socket) =>{
-
+    
     socket.on("dataChat", (data) =>{
-        let objNew = {
-            email: data.email,
-            msn: data.msn    
-        };
-
-        knex("mensajes")
-            .insert(objNew)
-            .then(()=> {
-                console.log("Register ok");
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-        
+        contenedor2.save(data).then( ()=> console.log("Mensaje añadido"));
         arrayM.push(data)
         io.sockets.emit("mensaje", arrayM);
     });
 
     socket.on("dataProduct", (data) =>{
-        contenedor2.save(data, knex);
+        contenedor1.save(data).then( ()=> console.log("Producto añadido"));
         arrayP.push(data)
         io.sockets.emit("productos", arrayP);
     });

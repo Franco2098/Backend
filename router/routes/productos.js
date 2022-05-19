@@ -8,22 +8,22 @@ const knex = require("../db")
 
 const contenedor = require("./metodos.js")
 
-const contenedor1 = new contenedor("productos.json")
+const contenedor1 = new contenedor("productos")
 
 router.get('/formulario', (req, res) => {
     res.render("formulario")
  })
 
 router.get('/productos', (req, res) => {
-    contenedor1.getAll(knex, res)
+    contenedor1.getAll(res)
  })
 
  router.get('/productos/:id', (req, res) => {
-    contenedor1.getById(req.params.id, knex, res)
+    contenedor1.getById(req.params.id, res)
 })
 
 router.post("/productos", (req, res) => {
-    contenedor1.save(req.body, knex)
+    contenedor1.save(req.body).then( ()=> res.send("Producto añadido"))
 })
 
 router.put("/productos/:id", (req,res)=> {
@@ -40,11 +40,11 @@ router.put("/productos/:id", (req,res)=> {
 
 
 router.delete("/productos/:id", (req,res)=> {
-    contenedor1.deleteById(req.params.id, knex, res)
+    contenedor1.deleteById(req.params.id, res)
 })
 
 router.delete("/productos", (req,res)=> {
-    contenedor1.deleteAll(knex, res)
+    contenedor1.deleteAll(res)
 })
 
 
