@@ -34,7 +34,7 @@ socket.on("productos", (data) => {
    })
 
    const render1 = (data) => {
-    let html = data.map((x) =>{
+        let html = data.map((x) =>{
         return `
             <p> ${x.name} - ${x.price} - ${x.thumbnail}</p>
         `
