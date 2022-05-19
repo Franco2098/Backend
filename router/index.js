@@ -2,7 +2,11 @@ const express = require("express");
 const {engine} = require("express-handlebars")
 const app = express();
 
-const fs = require("fs")
+const contenedor = require("./routes/metodos.js")
+
+const contenedor2 = new contenedor("productos.json")
+
+const knex = require("./db")
 
 const http = require("http");
 const server = http.createServer(app);
@@ -21,12 +25,10 @@ const productosRoutes = require("./routes/productos");
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
+let arrayP = []
+let arrayM = []
 
 app.use(express.static("../public"));
-
-let arrayMensajes = [];
-let arrayProductos = [];
-
 
 const {Server} = require("socket.io");
 const io = new Server(server);
@@ -34,13 +36,28 @@ const io = new Server(server);
 io.on("connection", (socket) =>{
 
     socket.on("dataChat", (data) =>{
-    save("mensajes.json", arrayMensajes, data, "mensaje")
-    io.sockets.emit("mensaje",arrayMensajes);
+        let objNew = {
+            email: data.email,
+            msn: data.msn    
+        };
+
+        knex("mensajes")
+            .insert(objNew)
+            .then(()=> {
+                console.log("Register ok");
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        
+        arrayM.push(data)
+        io.sockets.emit("mensaje", arrayM);
     });
 
     socket.on("dataProduct", (data) =>{
-        save("producto.json", arrayProductos, data, "productos")
-        io.sockets.emit("productos",arrayProductos);
+        contenedor2.save(data, knex);
+        arrayP.push(data)
+        io.sockets.emit("productos", arrayP);
     });
 })
 
@@ -52,38 +69,3 @@ server.listen(8080, () => {
 })
 
 
-async function save (nombreArchivo, array, obj, emision){
-    try {
-        if (fs.existsSync(nombreArchivo)){
-            let data = await fs.promises.readFile(`./${nombreArchivo}`, {encoding:"utf-8"})
-            if (data){
-                array = JSON.parse(data)
-                array.push(obj)
-                io.sockets.emit(emision, array);
-                await fs.promises.writeFile(`./${nombreArchivo}`, JSON.stringify(array), {encoding:"utf-8"})
-                    try {                              
-                    }catch (err){
-                    console.log("error")
-                }
-            }else{
-                array.push(obj)
-                io.sockets.emit(emision, array);
-                await fs.promises.writeFile(`./${nombreArchivo}`, JSON.stringify(array), {encoding:"utf-8"})
-                try {                           
-                }catch (err){
-                    console.log("error")
-                }
-            }
-        }else{
-            array.push(obj)
-            io.sockets.emit(emision, array);
-            await fs.promises.writeFile(`./${nombreArchivo}`, JSON.stringify(array), {encoding:"utf-8"})
-                    try {
-                    }catch (err){
-                    console.log("error")
-                    }
-        } 
-    }catch (err) {
-        console.log("error")
-    }                        
-}

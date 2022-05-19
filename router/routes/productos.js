@@ -4,76 +4,48 @@ const { Router } = express;
 
 let router = new Router();
 
-let arrayProductos = [];
-let id = 1;
+const knex = require("../db")
+
+const contenedor = require("./metodos.js")
+
+const contenedor1 = new contenedor("productos.json")
+
+router.get('/formulario', (req, res) => {
+    res.render("formulario")
+ })
 
 router.get('/productos', (req, res) => {
-    res.render("formulario", {data: arrayProductos});
+    contenedor1.getAll(knex, res)
  })
 
  router.get('/productos/:id', (req, res) => {
-    if (arrayProductos.length != 0) {
-        let productoId = arrayProductos.find(x => {return x.id == req.params.id});
-        if (productoId) {
-            res.send(productoId);
-        }else{
-            res.send({error: "Producto no encontrado"});
-        }
-    }else{
-        res.send("No hay productos");
-    }   
+    contenedor1.getById(req.params.id, knex, res)
 })
 
 router.post("/productos", (req, res) => {
-    if (arrayProductos.length == 0){
-        arrayProductos.push(req.body);
-        arrayProductos = arrayProductos.map((el) => ({...el, id:1}));
-        res.render("formulario", {data: arrayProductos});
-    }else{
-        arrayProductos.push(req.body);
-        arrayProductos = arrayProductos.map((el) => ({...el, id: id++}));
-        res.render("formulario", {data: arrayProductos});
-        id = 1;
-    }  
+    contenedor1.save(req.body, knex)
 })
 
 router.put("/productos/:id", (req,res)=> {
-    if (arrayProductos.length != 0){
-        if (arrayProductos[req.params.id - 1]){
-            res.send(arrayProductos[req.params.id - 1]);
-            let productNuevo = {
-                title: "Samsung s21",
-                price: "$154.999",
-                thumbnail: "https://shop.samsung.com",
-                id: req.params.id
-                }
-            arrayProductos = arrayProductos.filter(x => {return x.id != req.params.id});
-            arrayProductos.push(productNuevo);
-            arrayProductos.sort((a, b) => a.id - b.id);
-        }else{
-            res.send({error: "Producto no encontrado"});
-        }
-    }else{
-        res.send("No hay productos");
-    }
+    knex("users")
+    .where({id: req.params.id})
+    .update({name: req.body.name, price: req.body.price})
+    .then(()=> {
+        res.send({ message: "User update"})
+    })
+    .catch((err) => {
+        console.log(err);
+    });
 })
 
 
 router.delete("/productos/:id", (req,res)=> {
-    if (arrayProductos.length != 0) {
-        cantProductos = arrayProductos.length;
-        arrayProductos = arrayProductos.filter(x => {return x.id != req.params.id});
-        if (arrayProductos.length != cantProductos) {
-            res.send("Producto eliminado");
-        }else{
-            res.send({error: "Producto no encontrado"});
-        }
-    }else{
-        res.send("No hay productos");
-    } 
+    contenedor1.deleteById(req.params.id, knex, res)
 })
 
-
+router.delete("/productos", (req,res)=> {
+    contenedor1.deleteAll(knex, res)
+})
 
 
 module.exports = router;
