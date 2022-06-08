@@ -1,3 +1,5 @@
+let id = 1
+
 class contenedor {
     constructor () {
     this.arrayVacio = []
@@ -25,6 +27,12 @@ class contenedor {
         }else{
             return "El Array esta vacio"
         }        
+    }
+
+    actualizar(obj) {
+        let nuevaData = this.arrayVacio.filter(x => {return x.id != obj.id});
+        nuevaData.push(obj);
+        nuevaData.sort((a, b) => a.id - b.id);
     }
 
     deleteById(id){
