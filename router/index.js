@@ -1,5 +1,12 @@
 const express = require("express");
 const {engine} = require("express-handlebars")
+const session = require("express-session");
+
+const MongoStore = require("connect-mongo")
+const advancedOptions = {useNewUrlParser: true, useUnifiedTopology: true}
+
+
+
 const app = express();
 
 const knex = require("./db")
@@ -34,9 +41,24 @@ app.engine("hbs", engine({
 }));
 
 const productosRoutes = require("./routes/productos");
+const sessionRoutes = require("./routes/productos");
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
+
+app.use(session({
+    secret:"key",
+    resave:true,
+    saveUninitialized:true,
+    cookie:{maxAge:60000},
+    store: MongoStore.create({
+        mongoUrl: "mongodb+srv://franco:holamundo1@cluster0.feugk.mongodb.net/?retryWrites=true&w=majority",
+        mongoOptions: advancedOptions
+    })
+}))
+app.use("/", sessionRoutes)
+
 
 
 app.use(express.static("../public"));

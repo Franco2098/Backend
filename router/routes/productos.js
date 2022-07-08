@@ -1,5 +1,7 @@
 const express = require("express");
 const {faker} = require("@faker-js/faker")
+const session = require("express-session");
+
 
 const { Router } = express;
 
@@ -11,8 +13,16 @@ const contenedor = require("./metodos.js")
 
 const contenedor1 = new contenedor("productos")
 
+router.get('/login', (req, res) => {
+    res.render("login")
+ })
+
 router.get('/formulario', (req, res) => {
     res.render("formulario")
+ })
+
+router.get('/logout', (req, res) => {
+    res.render("logout")
  })
 
 router.get('/productos', (req, res) => {
@@ -58,5 +68,24 @@ router.post("/productos-test", (req,res)=> {
     }
     res.send("Productos añadidos")
 })
+
+router.post("/login", (req,res)=> {
+    for (const key in req.body) {
+        req.session[key] = req.body[key]
+    }
+    res.render("formulario", {name: req.session.name})
+})
+
+router.get("/logout_", (req,res) => {
+    req.session.destroy(err => {
+        if (err){
+       res.json({status: "Logout ERROR", body:err})
+    }
+    setTimeout(function(){
+        res.render("login");
+    }, 2000);
+    })
+})
+
 
 module.exports = router;
