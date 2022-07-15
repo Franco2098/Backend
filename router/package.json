@@ -24,8 +24,11 @@
     "express-handlebars": "^6.0.5",
     "express-session": "^1.17.3",
     "knex": "^2.0.0",
+    "mongoose": "^6.4.4",
     "mysql": "^2.18.1",
     "normalizr": "^3.6.2",
+    "passport": "^0.6.0",
+    "passport-local": "^1.0.0",
     "socket.io": "^4.5.0"
   },
   "devDependencies": {

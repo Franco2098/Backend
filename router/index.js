@@ -1,11 +1,10 @@
 const express = require("express");
 const {engine} = require("express-handlebars")
 const session = require("express-session");
+const passport = require("passport")
 
 const MongoStore = require("connect-mongo")
 const advancedOptions = {useNewUrlParser: true, useUnifiedTopology: true}
-
-
 
 const app = express();
 
@@ -58,8 +57,8 @@ app.use(session({
     })
 }))
 app.use("/", sessionRoutes)
-
-
+app.use(passport.initialize())
+app.use(passport.session())
 
 app.use(express.static("../public"));
 
@@ -100,3 +99,10 @@ server.listen(8080, () => {
 })
 
 
+const mongoose = require('mongoose');
+
+mongoose.connect(
+    "mongodb+srv://franco:holamundo1@cluster0.feugk.mongodb.net/?retryWrites=true&w=majority"
+)
+.then(response=> console.log("Conectado a la base de datos"))
+.catch(err=>console.log("err"))
