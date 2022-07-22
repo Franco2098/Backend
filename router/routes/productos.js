@@ -150,5 +150,9 @@ router.delete("/productos", (req,res)=> {
     contenedor1.deleteAll(res)
 })
 
+router.get("/info", (req,res)=> {
+    const info = {ArgumentosEntradas: process.argv, SistemaOperativo: process.platform, VersionNode: process.version, Memoria: process.memoryUsage(), Path: process.execPath, ProcessId: process.pid, CarpetaProyecto: process.cwd()  }
+    res.send(info)
+})
 
 module.exports = router;

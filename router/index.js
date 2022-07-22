@@ -2,6 +2,13 @@ const express = require("express");
 const {engine} = require("express-handlebars")
 const session = require("express-session");
 const passport = require("passport")
+const yargs = require("yargs")
+require("dotenv").config()
+const {fork} = require("child_process")
+
+const args = yargs.alias({p:"puerto"})
+     .default({p:8080})
+     .argv
 
 const MongoStore = require("connect-mongo")
 const advancedOptions = {useNewUrlParser: true, useUnifiedTopology: true}
@@ -52,7 +59,7 @@ app.use(session({
     saveUninitialized:true,
     cookie:{maxAge:60000},
     store: MongoStore.create({
-        mongoUrl: "mongodb+srv://franco:holamundo1@cluster0.feugk.mongodb.net/?retryWrites=true&w=majority",
+        mongoUrl: process.env.MONGO,
         mongoOptions: advancedOptions
     })
 }))
@@ -91,10 +98,25 @@ io.on("connection", (socket) =>{
     });
 })
 
+app.get('/api/random', (req, res) => {
+    const result = {}
+  
+    const amount = parseInt(req.query.cant) || 100_000_000
+  
+    const forked = fork('./random.js')
+  
+    forked.send({ start: true, amount })
+  
+    forked.on('message', (result) => {
+  
+      res.json(result)
+  
+    })
+  })
+
 app.use("/api", productosRoutes);
 
-
-server.listen(8080, () => {
+server.listen(args.p, () => {
     
 })
 
@@ -102,7 +124,7 @@ server.listen(8080, () => {
 const mongoose = require('mongoose');
 
 mongoose.connect(
-    "mongodb+srv://franco:holamundo1@cluster0.feugk.mongodb.net/?retryWrites=true&w=majority"
+    process.env.MONGO
 )
 .then(response=> console.log("Conectado a la base de datos"))
 .catch(err=>console.log("err"))
