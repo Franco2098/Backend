@@ -17,7 +17,7 @@ knex.schema.createTableIfNotExists("productos", function(table){
     table.string("thumbnail")
 })
 .then(()=> {
-    console.log("conexion y tabla creada")
+    //console.log("conexion y tabla creada")
 })
 .catch((err) => {
     console.log(err)
@@ -33,7 +33,7 @@ knex.schema.createTableIfNotExists("mensajes", function(table){
     table.string("msn")
 })
 .then(()=> {
-    console.log("conexion y tabla creada")
+    //console.log("conexion y tabla creada")
 })
 .catch((err) => {
     console.log(err)

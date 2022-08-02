@@ -5,11 +5,22 @@ const passport = require("passport")
 const yargs = require("yargs")
 require("dotenv").config()
 const {fork} = require("child_process")
+const cluster = require("cluster")
+const numCPUs = require("os").cpus().length
 
-const args = yargs.alias({p:"puerto"})
-     .default({p:8080})
+const args = yargs.alias({p:"puerto", m:"modo"})
+     .default({p:8080, m:"FOLK"})
      .argv
 
+const MODO_CLUSTER = process.argv[2] === "CLUSTER"
+
+if (MODO_CLUSTER && cluster.isMaster) {
+    console.log(`Master ${process.pid} is running`)
+    for (let i = 0; i < numCPUs; i++){
+        cluster.fork()
+    }
+}else{
+    
 const MongoStore = require("connect-mongo")
 const advancedOptions = {useNewUrlParser: true, useUnifiedTopology: true}
 
@@ -114,10 +125,11 @@ app.get('/api/random', (req, res) => {
     })
   })
 
+
 app.use("/api", productosRoutes);
 
 server.listen(args.p, () => {
-    
+  console.log(`Proceso ${process.pid}`)
 })
 
 
@@ -126,5 +138,7 @@ const mongoose = require('mongoose');
 mongoose.connect(
     process.env.MONGO
 )
-.then(response=> console.log("Conectado a la base de datos"))
+
 .catch(err=>console.log("err"))
+
+}

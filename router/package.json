@@ -24,6 +24,7 @@
     "express": "^4.17.3",
     "express-handlebars": "^6.0.5",
     "express-session": "^1.17.3",
+    "forever": "^4.0.3",
     "knex": "^2.0.0",
     "mongoose": "^6.4.4",
     "mysql": "^2.18.1",

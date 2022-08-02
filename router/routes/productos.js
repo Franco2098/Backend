@@ -3,6 +3,7 @@ const {faker} = require("@faker-js/faker")
 const session = require("express-session");
 const passport = require("passport")
 const LocalStrategy = require("passport-local").Strategy
+const numCPUs = require("os").cpus().length
 
 const Usuarios = require("../user.js")
 
@@ -151,7 +152,9 @@ router.delete("/productos", (req,res)=> {
 })
 
 router.get("/info", (req,res)=> {
-    const info = {ArgumentosEntradas: process.argv, SistemaOperativo: process.platform, VersionNode: process.version, Memoria: process.memoryUsage(), Path: process.execPath, ProcessId: process.pid, CarpetaProyecto: process.cwd()  }
+    const info = {ArgumentosEntradas: process.argv, SistemaOperativo: process.platform, VersionNode: process.version, Memoria: process.memoryUsage(), Path: process.execPath, ProcessId: process.pid, CarpetaProyecto: process.cwd(),
+                  Procesadores: numCPUs
+    }
     res.send(info)
 })
 
