@@ -188,7 +188,7 @@ router.get("/info", (req,res)=> {
     }
 
     //Prueba con console log
-    //console.log(info)
+    console.log(info)
     res.send(info)
 })
 
