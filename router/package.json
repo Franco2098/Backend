@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/Franco2098/Backend#readme",
   "dependencies": {
+    "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
     "dotenv": "^16.0.1",
     "express": "^4.17.3",
@@ -32,6 +33,7 @@
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
     "socket.io": "^4.5.0",
+    "winston": "^3.8.1",
     "yargs": "^17.5.1"
   },
   "devDependencies": {

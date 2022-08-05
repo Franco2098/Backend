@@ -7,6 +7,7 @@ require("dotenv").config()
 const {fork} = require("child_process")
 const cluster = require("cluster")
 const numCPUs = require("os").cpus().length
+const logger = require("./logger.js")
 
 const args = yargs.alias({p:"puerto", m:"modo"})
      .default({p:8080, m:"FOLK"})
@@ -125,8 +126,13 @@ app.get('/api/random', (req, res) => {
     })
   })
 
-
 app.use("/api", productosRoutes);
+
+app.get("*", (req, res)=>{
+    logger.warn(`Esta url ${req.url} no existe`)
+    res.send("Esta url no existe")
+})
+
 
 server.listen(args.p, () => {
   console.log(`Proceso ${process.pid}`)
