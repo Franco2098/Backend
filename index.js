@@ -7,7 +7,8 @@ require("dotenv").config()
 const {fork} = require("child_process")
 const cluster = require("cluster")
 const numCPUs = require("os").cpus().length
-const logger = require("./logger.js")
+const logger = require("./router/logger.js")
+const mongoose = require('mongoose');
 
 const args = yargs.alias({p:"puerto", m:"modo"})
      .default({p:8080, m:"FOLK"})
@@ -27,13 +28,13 @@ const advancedOptions = {useNewUrlParser: true, useUnifiedTopology: true}
 
 const app = express();
 
-const knex = require("./db")
+const knex = require("./router/db")
 
 const {normalize, schema} = require("normalizr")
 const {inspect} = require("util")
 
 
-const contenedor = require("./routes/metodos.js")
+const contenedor = require("./router/routes/metodos.js")
 
 const contenedor2 = new contenedor("mensajes")
 const contenedor1 = new contenedor("productos")
@@ -50,7 +51,7 @@ const http = require("http");
 const server = http.createServer(app);
 
 app.set("view engine", "hbs");
-app.set("views", "../views");
+app.set("views", "./views");
 
 app.engine("hbs", engine({
     extname:".hbs",
@@ -58,8 +59,8 @@ app.engine("hbs", engine({
     partialsDir: __dirname+"/views/partials"
 }));
 
-const productosRoutes = require("./routes/productos");
-const sessionRoutes = require("./routes/productos");
+const productosRoutes = require("./router/routes/productos");
+const sessionRoutes = require("./router/routes/productos");
 
 
 app.use(express.json());
@@ -79,7 +80,7 @@ app.use("/", sessionRoutes)
 app.use(passport.initialize())
 app.use(passport.session())
 
-app.use(express.static("../public"));
+app.use(express.static(__dirname + "/public"));
 
 const {Server} = require("socket.io");
 const { json } = require("express");
@@ -115,7 +116,7 @@ app.get('/api/random', (req, res) => {
   
     const amount = parseInt(req.query.cant) || 100_000_000
   
-    const forked = fork('./random.js')
+    const forked = fork('./router/random.js')
   
     forked.send({ start: true, amount })
   
@@ -128,23 +129,24 @@ app.get('/api/random', (req, res) => {
 
 app.use("/api", productosRoutes);
 
+app.get("/", (req,res)=> {
+    res.render("index.html")
+})
+
 app.get("*", (req, res)=>{
     logger.warn(`Esta url ${req.url} no existe`)
     res.send("Esta url no existe")
 })
 
+PORT = process.env.PORT || 8080
 
-server.listen(args.p, () => {
+server.listen(PORT, () => {
   console.log(`Proceso ${process.pid}`)
 })
-
-
-const mongoose = require('mongoose');
 
 mongoose.connect(
     process.env.MONGO
 )
-
 .catch(err=>console.log("err"))
 
 }

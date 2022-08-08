@@ -200,6 +200,4 @@ router.get("/infoZip", compression(), (req,res)=> {
     res.send(info)
 })
 
-
-
 module.exports = router;

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "node index.js"
   },
   "repository": {
     "type": "git",
@@ -34,9 +34,7 @@
     "passport-local": "^1.0.0",
     "socket.io": "^4.5.0",
     "winston": "^3.8.1",
-    "yargs": "^17.5.1"
-  },
-  "devDependencies": {
+    "yargs": "^17.5.1",
     "@faker-js/faker": "^7.3.0"
   }
 }
