@@ -1,6 +1,8 @@
+<link rel="stylesheet" href="/styles1.css">
+
 <form action="/logout" method="get">
 <div>
-        <h1>Bienvenido {{this.name}}</h1>
+        <h3>Bienvenido {{this.name}}</h3>
         <ul>
         <li class="button">
             <button type="submit">Desloguear</button>
@@ -9,20 +11,28 @@
 </div>
 </form>
 
-<form onsubmit="addInfo1(); return false">
-        <h1>INGRESE UN PRODUCTO</h1>
+<form action="/productos" method="post">
+        <h3>INGRESE UN PRODUCTO</h3>
         <ul>
          <li>
-           <label for="name">Nombre:</label>
-           <input type="text" id="name" name="name">
+           <label for="nombre">Nombre:</label>
+           <input type="text" id="nombre" name="nombre">
          </li>
          <li>
-           <label for="price">Precio:</label>
-           <input type="text" id="price" name="price">
+           <label for="plataforma">Plataforma:</label>
+           <input type="array" id="plataforma" name="plataforma">
          </li>
          <li>
-           <label for="thumbnail">url:</label>
-           <input type="text" id="thumbnail" name="thumbnail">
+           <label for="precio">Precio:</label>
+           <input type="number" id="precio" name="precio">
+         </li>
+         <li>
+           <label for="categoria">Categoria:</label>
+           <input type="text" id="categoria" name="categoria">
+         </li>
+         <li>
+           <label for="imagen">Ruta:</label>
+           <input type="text" id="imagen" name="imagen">
          </li>
          <li class="button">
             <button type="submit">Enviar datos</button>
@@ -31,26 +41,6 @@
 
        </form>
 
-       <div id="productos">
-        <h1>LISTA DE PRODUCTOS</h1>
-    <div id="product"></div>
-    </div>
-
-<form onsubmit="addInfo(); return false">
-        <h1>CENTRO DE MENSAJES</h1>
-        <input type="text" id="nb" name="" placeholder="Email">
-        <input type="text" id="nm" name="" placeholder="Nombre">
-        <input type="text" id="ln" name="" placeholder="Apellido">
-        <input type="text" id="ag" name="" placeholder="Edad">
-        <input type="text" id="al" name="" placeholder="Alias">
-        <input type="text" id="av" name="" placeholder="Logo de usuario">
-        <input type="text" id="msn" name="" placeholder="Mensaje">
-        <input type="submit" value="Enviar">
-       </form>
-
-<div id="mensajes">
-        <h1>CHAT</h1>
-    <div id="chat"></div>
-    </div>
+  
 
 

@@ -5,29 +5,63 @@ const passport = require("passport")
 const LocalStrategy = require("passport-local").Strategy
 const numCPUs = require("os").cpus().length
 const compression = require("compression")
-
 const Usuarios = require("../user.js")
-
+const Producto = require("./productosMongo.js")
+const Carrito = require("./carritoMongo.js")
 const logger = require("../logger.js")
+const bcrypt = require('bcrypt');
+const nodemailer = require("nodemailer")
 
 
+const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: "madisen.nolan97@ethereal.email",
+        pass: 'hzQ1uhFbdVmCjFFzSm'
+    }
+});
+  
 let nom = ""
+
+function hashPassword(password) {
+    var salt = bcrypt.genSaltSync(10);
+    return bcrypt.hashSync(password, salt);
+  }
+
+function comparePassword(inputPass, hashedPass) {
+    return bcrypt.compareSync(inputPass, hashedPass);
+  }
 
 passport.use("registro", new LocalStrategy({
     usernameField:"nombre",
     passwordField:"contraseña",
     passReqToCallback: true
-},async(req, nombre, constraseña, done)=>{
+},async(req, nombre, contraseña, done)=>{
     const usuarioBd = await Usuarios.findOne({nombre})
-    nom = usuarioBd.nombre
+    nom = nombre
     if(usuarioBd){
         return done(null,false)
     }
     const usuarioNuevo = new Usuarios()
     usuarioNuevo.nombre = nombre
-    usuarioNuevo.constraseña = constraseña
+    usuarioNuevo.contraseña = hashPassword(contraseña)
+    usuarioNuevo.email = req.body.email
+    usuarioNuevo.edad = req.body.edad
+    usuarioNuevo.tel = req.body.tel
+    usuarioNuevo.direccion = req.body.direccion
+    usuarioNuevo.foto = req.body.foto
     await usuarioNuevo.save()
+
+    transporter.sendMail({
+        from: 'Servidor Node.js',
+        to: "madisen.nolan97@ethereal.email",
+        subject: 'Nuevo registro',
+        html: `${usuarioNuevo}`
+    })
+
     done(null,usuarioNuevo)
+
 }
 ))
 
@@ -35,13 +69,16 @@ passport.use("login", new LocalStrategy({
     usernameField:"nombre",
     passwordField:"contraseña",
     passReqToCallback: true
-},async(req, nombre, constraseña, done)=>{
-    const usuarioBd = await Usuarios.findOne({nombre})
-    if(!usuarioBd){
+},async(req, nombre, contraseña, done)=>{
+    const usuarioBdNombre = await Usuarios.findOne({nombre})
+    const arrayBD = await Usuarios.find({})
+    const usuarioBdContraseña = arrayBD.map((el)=> (el.contraseña))
+    const comp = comparePassword(contraseña, usuarioBdContraseña.toString())
+    if(!usuarioBdNombre || comp == false ){
         return done(null,false)
     }
-    nom = usuarioBd.nombre
-    done(null,usuarioBd)
+    nom = usuarioBdNombre.nombre
+    done(null,usuarioBdNombre)
 }
 ))
 
@@ -54,17 +91,13 @@ passport.deserializeUser(async(id,done)=>{
     done(null,usuario)
 })
 
-
 const { Router } = express;
 
 let router = new Router();
 
-const knex = require("../db")
-
-const contenedor = require("./metodos.js");
 const { json } = require("express");
+const { showHelpOnFail } = require("yargs");
 
-const contenedor1 = new contenedor("productos")
 
 router.get('/registro', (req, res) => {
     logger.info("Esta url existe")
@@ -78,7 +111,11 @@ router.get('/login', (req, res) => {
 
 router.get('/formulario',(req, res) => {
     logger.info("Esta url existe")
-    res.render("formulario", {name:nom})
+    if(nom == ""){
+        res.render("login")
+    }else{
+        res.render("formulario", {name:nom})
+    }
  })
 
 router.get('/logout', (req, res) => {
@@ -86,21 +123,6 @@ router.get('/logout', (req, res) => {
     res.render("logout")
  })
 
-router.get('/productos', (req, res) => {
-    logger.info("Esta url existe")
-    contenedor1.getAll(res)
- })
-
- router.get('/productos/:id', (req, res) => {
-    logger.info("Esta url existe")
-    if(!isNaN(req.params.id)){
-        logger.info("Parametro ingresado correcto")
-        contenedor1.getById(req.params.id, res)
-    }else{
-        logger.error("Parametro ingresado incorrecto")
-        res.send("Parametro ingresado incorrecto")
-    }
-})
 
 router.get('/errorRegistro', (req, res) => {
     logger.info("Esta url existe")
@@ -124,44 +146,20 @@ router.get('/errorLogin', (req, res) => {
     })
 })
 
-router.post("/productos", (req, res) => {
-    logger.info("Esta url existe")
-    contenedor1.save(req.body).then( ()=> res.send("Producto añadido"))
-})
-
-router.post("/productos-test", (req,res)=> {
-    logger.info("Esta url existe")
-    for(let i=0; i < 5; i++) {
-        const obj = { name: faker.commerce.product(),
-        price: faker.commerce.price(),
-        thumbnail: faker.image.business()
-        }
-        contenedor1.save(obj)
-    }
-    res.send("Productos añadidos")
-})
 
 router.post("/registro", passport.authenticate("registro", {
     failureRedirect: "/errorRegistro",
-    successRedirect: "/formulario"
+    successRedirect: "/principal"
 }))
 
 router.post("/login", passport.authenticate("login", {
     failureRedirect: "/errorLogin",
-    successRedirect: "/formulario"
+    successRedirect: "/principal"
 }))
 
 router.put("/productos/:id", (req,res)=> {
     logger.info("Esta url existe")
-    knex("users")
-    .where({id: req.params.id})
-    .update({name: req.body.name, price: req.body.price})
-    .then(()=> {
-        res.send({ message: "User update"})
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+    
 })
 
 
@@ -169,7 +167,7 @@ router.delete("/productos/:id", (req,res)=> {
     logger.info("Esta url existe")
     if(!isNaN(req.params.id)){
         logger.info("Parametro ingresado correcto")
-        contenedor1.deleteById(req.params.id, res)
+        
     }else{
         logger.error("Parametro ingresado incorrecto")
         res.send("Parametro ingresado incorrecto")
@@ -178,7 +176,7 @@ router.delete("/productos/:id", (req,res)=> {
 
 router.delete("/productos", (req,res)=> {
     logger.info("Esta url existe")
-    contenedor1.deleteAll(res)
+    
 })
 
 router.get("/info", (req,res)=> {
@@ -200,4 +198,55 @@ router.get("/infoZip", compression(), (req,res)=> {
     res.send(info)
 })
 
+router.get('/principal', async(req, res) => {
+    const pro = await Producto.find({})
+    res.render("principal", {data:pro, name:nom})
+
+ })
+
+ router.post("/productos", (req, res) => {
+    const nuevoProduct = req.body
+    const nuevo = new Producto(nuevoProduct)
+    nuevo.save()
+    res.send("Producto añadido")
+})
+ 
+router.get('/carrito', async(req, res) => {
+    const carr = await Carrito.find({})
+    res.render("carrito", {data:carr, name:nom})
+
+ })
+
+router.post("/carrito", (req, res) => {
+    const nuevoCarrito = req.body
+    const nuevo = new Carrito(nuevoCarrito)
+    nuevo.save()
+    res.send("Producto añadido al carrito")
+})
+
+router.get('/compra', async(req, res) => {
+    const arrayBD = await Usuarios.find({})
+    const usuarioBd = arrayBD.filter((el)=> (el.nombre == nom ))
+    const emailBD = usuarioBd.map((el)=> (el.email))
+    const carritoBD =  await Carrito.find({})
+const transporter = nodemailer.createTransport({
+    host: 'smtp.ethereal.email',
+    port: 587,
+    auth: {
+        user: "	madisen.nolan97@ethereal.email",
+        pass: 'hzQ1uhFbdVmCjFFzSm'
+    }
+});
+
+transporter.sendMail({
+    from: 'Servidor Node.js',
+    to: "madisen.nolan97@ethereal.email",
+    subject: `Nuevo pedido de ${nom} ${emailBD}`,
+    html: `${carritoBD}`
+})
+    res.send("Mail enviado")
+
+ })
+
+module.exports = nom;
 module.exports = router;

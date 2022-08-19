@@ -1,5 +1,7 @@
 const express = require("express");
+const Handlebars = require('handlebars')
 const {engine} = require("express-handlebars")
+const {allowInsecurePrototypeAccess} = require('@handlebars/allow-prototype-access')
 const session = require("express-session");
 const passport = require("passport")
 const yargs = require("yargs")
@@ -28,24 +30,7 @@ const advancedOptions = {useNewUrlParser: true, useUnifiedTopology: true}
 
 const app = express();
 
-const knex = require("./router/db")
-
-const {normalize, schema} = require("normalizr")
 const {inspect} = require("util")
-
-
-const contenedor = require("./router/routes/metodos.js")
-
-const contenedor2 = new contenedor("mensajes")
-const contenedor1 = new contenedor("productos")
-
-let arrayP = []
-let arrayM = []
-let id = 1
-
-const mensajesSchema = new schema.Entity("Mensajes")
-
-const mensajeslistSchema = new schema.Array(mensajesSchema)
 
 const http = require("http");
 const server = http.createServer(app);
@@ -56,7 +41,8 @@ app.set("views", "./views");
 app.engine("hbs", engine({
     extname:".hbs",
     defaultLayout:"main.hbs",
-    partialsDir: __dirname+"/views/partials"
+    partialsDir: __dirname+"/views/partials",
+    handlebars: allowInsecurePrototypeAccess(Handlebars)
 }));
 
 const productosRoutes = require("./router/routes/productos");
@@ -82,61 +68,11 @@ app.use(passport.session())
 
 app.use(express.static(__dirname + "/public"));
 
-const {Server} = require("socket.io");
+
 const { json } = require("express");
-const io = new Server(server);
 
-io.on("connection", (socket) =>{
-    
-    socket.on("dataChat", (data) =>{
-        contenedor2.save(data).then( ()=> console.log("Mensaje añadido"));
-        data = {...data, id: id++}
-        arrayM.push(data)
-        io.sockets.emit("mensaje", arrayM);
-        
-        function print(obj){
-            console.log(inspect(obj,false,12,true))
-        }
-
-        const mensajesNormalized = normalize(arrayM,mensajeslistSchema)
-
-        print(mensajesNormalized)
-
-    });
-
-    socket.on("dataProduct", (data) =>{
-        contenedor1.save(data).then( ()=> console.log("Producto añadido"));
-        arrayP.push(data)
-        io.sockets.emit("productos", arrayP);
-    });
-})
-
-app.get('/api/random', (req, res) => {
-    const result = {}
-  
-    const amount = parseInt(req.query.cant) || 100_000_000
-  
-    const forked = fork('./router/random.js')
-  
-    forked.send({ start: true, amount })
-  
-    forked.on('message', (result) => {
-  
-      res.json(result)
-  
-    })
-  })
 
 app.use("/api", productosRoutes);
-
-app.get("/", (req,res)=> {
-    res.render("index.html")
-})
-
-app.get("*", (req, res)=>{
-    logger.warn(`Esta url ${req.url} no existe`)
-    res.send("Esta url no existe")
-})
 
 PORT = process.env.PORT || 8080
 

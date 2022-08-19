@@ -1,0 +1,169 @@
+<header>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="/principal">TENNO GAMES</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Categorias
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li><a id="Accion" class="dropdown-item" href="#Accion">Accion</a></li>
+                          <li><a id="Aventura" class="dropdown-item" href="#Aventura">Aventura</a></li>
+                          <li><a id="Multijugador" class="dropdown-item" href="#Multijugador">Multijugador</a></li>
+                          <li><a id="Rol" class="dropdown-item" href="#Rol">Rol</a></li>
+                          <li><a id="Carrera" class="dropdown-item" href="#Carrera">Carrera</a></li>
+                        </ul>
+                      </li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Plataformas
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li><a id="PS4" class="dropdown-item 1" href="#PS4">PS4</a></li>
+                          <li><a id="PC" class="dropdown-item 1" href="#PC">PC</a></li>
+                          <li><a id="XBOX" class="dropdown-item 1" href="#XBOX">XBOX</a></li>
+                        </ul>
+                      </li>                     
+                    </ul>
+                      {{#if this.name}}
+                        <li class="nav-item dropdown" style="display: flex">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: rgba(255,255,255,.55); ">
+                          {{this.name}}
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <li style="display: flex ; justify-content: center;"><a id="deslogueo" class="btn btn-primary" onclick= "location.href='/logout'">Desloguearse</a></li>
+                        </ul>
+                      </li>                    
+                      {{else}}
+                      <button type="submit" onclick= "location.href='/login'" class="btn btn-primary">Ir al login</button>
+                      {{/if}}             
+                    <form class="d-flex">
+                      <div id="circulo" style="height:15px; width:25px; background:#3ab32f; border-radius:100%; position: relative; transform: translate(30px,2px); display: flex ; 
+                      justify-content: center; align-items: center;">
+                       </div>
+                       <div id = "car">
+                      <a href="/carrito" type="button" style="margin-right: 20px; margin-top: 8px;">
+                      <i class="fas fa-shopping-cart fa-lg fa-inverse"></i>
+                      </a>
+                      </div>                                                       
+                      <input id = "buscador" class="form-control me-2" type="text" placeholder="Buscar" aria-label="Search">
+                      <button id = "buscador2" class="btn btn-outline-success" type="button">Buscar</button>
+                    </form>
+                  </div>
+                </div>
+              </nav>
+        </header>
+        <main style="min-height: 1000px">
+          <div id = "cuerpo" ></div>
+            <div class="container" style="margin-top: 30px;" >
+                <div class="row">
+                    <div id = "Productos" >
+                    <div id = "productStyle" >
+                    
+                    {{#each data}}
+                    
+                    <div class="card" style="width: 18rem;">
+          <div class="imagen">
+            <img src= {{this.imagen}} class="card-img-top" alt="...">
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{this.nombre}}</h5>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Precio: {{this.precio}}</li>
+            <li class="list-group-item">Plataforma: {{this.plataforma}}</li>
+            <li class="list-group-item">Categoria: {{this.categoria}}</li>
+            <button id= "boton${product.id}" onclick= "disabled = true" class="btn btn-primary">Añadir al Carrito</button>
+          </ul>
+        </div>
+        {{/each}}
+                </div>
+                </div>
+                </div>
+            </div>
+        </main>
+        <footer class="text-center text-lg-start bg-dark text-muted">
+    
+    <section
+      class="d-flex justify-content-center justify-content-lg-between p-4 border-bottom"
+    >
+       
+      <div class ="offset-md-10">
+        <a target = "blank" href="https://es-la.facebook.com/" class="me-4 text-reset">
+          <i class="fab fa-facebook-f"></i>
+        </a>
+        <a target = "blank" href="https://twitter.com/?lang=es" class="me-4 text-reset">
+          <i class="fab fa-twitter"></i>
+        </a>
+        <a target = "blank" href="https://www.google.com/intl/es-419/gmail/about/" class="me-4 text-reset">
+          <i class="fab fa-google"></i>
+        </a>
+        <a target = "blank" href="https://www.instagram.com/?hl=es-la" class="me-4 text-reset">
+          <i class="fab fa-instagram"></i>
+        </a>
+        <a target = "blank" href="https://ar.linkedin.com/" class="me-4 text-reset">
+          <i class="fab fa-linkedin"></i>
+        </a>
+        <a target = "blank" href="https://github.com/Franco2098/Desafios" class="me-4 text-reset">
+          <i class="fab fa-github"></i>
+        </a>
+      </div>
+      
+    </section>
+    
+  
+    
+    <section class="">
+      <div class="container text-center text-md-start mt-5">
+        
+        <div class="row">
+          
+          <div class="col-md-2 col-lg-2 col-xl-3 mx-auto mb-4">
+            
+            <h6 class="text-uppercase fw-bold mb-2">
+              <i class="fas fa-gem me-3"></i>Tenno Games
+            </h6>
+          </div>
+          
+  
+          
+          <div class="col-md-6 col-lg-2 col-xl-4 mx-auto mb-4">
+            
+            <h6 class="text-uppercase fw-bold mb-6">
+             Terminos y Condiciones
+            </h6>
+          </div>
+          
+          <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+            
+            <h6 class="text-uppercase fw-bold mb-4">
+              Contacto
+            </h6>
+            <p><i class="fas fa-home me-3"></i> Argentina, Córdoba</p>
+            <p>
+              <i class="fas fa-envelope me-3"></i>
+              francodlopez98@gmail.com
+            </p>
+            <p><i class="fas fa-phone me-3"></i> 3518382910</p>
+          </div>
+          
+        </div>
+        
+      </div>
+    </section>
+    
+  
+    
+    <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
+      © 2022 Copyright:
+      <a class="text-reset fw-bold">TENNO GAMES</a>
+    </div>
+    
+  </footer>
+
+
