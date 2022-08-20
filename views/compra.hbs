@@ -6,31 +6,9 @@
                     <span class="navbar-toggler-icon"></span>
                   </button>
                   <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                      <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Categorias
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <li><a id="Accion" class="dropdown-item" href="#Accion">Accion</a></li>
-                          <li><a id="Aventura" class="dropdown-item" href="#Aventura">Aventura</a></li>
-                          <li><a id="Multijugador" class="dropdown-item" href="#Multijugador">Multijugador</a></li>
-                          <li><a id="Rol" class="dropdown-item" href="#Rol">Rol</a></li>
-                          <li><a id="Carrera" class="dropdown-item" href="#Carrera">Carrera</a></li>
-                        </ul>
-                      </li>
-                      <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Plataformas
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <li><a id="PS4" class="dropdown-item 1" href="#PS4">PS4</a></li>
-                          <li><a id="PC" class="dropdown-item 1" href="#PC">PC</a></li>
-                          <li><a id="XBOX" class="dropdown-item 1" href="#XBOX">XBOX</a></li>
-                        </ul>
-                      </li>                     
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">                     
                     </ul>
-                      {{#if this.name}}
+                    {{#if this.name}}
                         <li class="nav-item dropdown" style="display: flex">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: rgba(255,255,255,.55); ">
                           {{this.name}}
@@ -40,21 +18,9 @@
                         </ul>
                       </li>                    
                       {{else}}
-                      <button type="submit" onclick= "location.href='/registro'" class="btn btn-primary" style="margin-right: 20px;">Ir al registro</button>
                       <button type="submit" onclick= "location.href='/login'" class="btn btn-primary">Ir al login</button>
-                      {{/if}}             
-                    <form class="d-flex">
-                      <div id="circulo" style="height:15px; width:25px; background:#3ab32f; border-radius:100%; position: relative; transform: translate(30px,2px); display: flex ; 
-                      justify-content: center; align-items: center;">
-                       </div>
-                       <div id = "car">
-                      <a href="/carrito" type="button" style="margin-right: 20px; margin-top: 8px;">
-                      <i class="fas fa-shopping-cart fa-lg fa-inverse"></i>
-                      </a>
-                      </div>                                                       
-                      <input id = "buscador" class="form-control me-2" type="text" placeholder="Buscar" aria-label="Search">
-                      <button id = "buscador2" class="btn btn-outline-success" type="button">Buscar</button>
-                    </form>
+                      {{/if}} 
+                    
                   </div>
                 </div>
               </nav>
@@ -63,30 +29,21 @@
           <div id = "cuerpo" ></div>
             <div class="container" style="margin-top: 30px;" >
                 <div class="row">
-                    <div id = "Productos" >
-                    <div id = "productStyle" >
+                  <div id = "Productos1" ></div>
+                  <div id = "productStyle" >
                     
-                    {{#each data}}
-                    
-                    <div class="card" style="width: 18rem;">
-          <div class="imagen">
-            <img src= {{this.imagen}} class="card-img-top" alt="...">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">{{this.nombre}}</h5>
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item">Precio: {{this.precio}}</li>
-            <li class="list-group-item">Plataforma: {{this.plataforma}}</li>
-            <li class="list-group-item">Categoria: {{this.categoria}}</li>
-            <button id= "boton${product.id}" onclick= "disabled = true" class="btn btn-primary">Añadir al Carrito</button>
-          </ul>
-        </div>
-        {{/each}}
+                    <div class="alert alert-success" role="alert">
+                    <h4 class="alert-heading">Felcidades!</h4>
+                    <p>Tu compra a sido realizada con exito.</p>
+                    <hr>
+                    <p class="mb-0">Lo esperamos pronto.</p>
+                    </div>
+
+                  
                 </div>
-                </div>
-                </div>
+                
             </div>
+            
         </main>
         <footer class="text-center text-lg-start bg-dark text-muted">
     
@@ -163,8 +120,6 @@
     <div class="text-center p-4" style="background-color: rgba(0, 0, 0, 0.05);">
       © 2022 Copyright:
       <a class="text-reset fw-bold">TENNO GAMES</a>
-    </div>
+    </div>s
     
   </footer>
-
-

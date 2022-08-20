@@ -11,7 +11,7 @@ const Carrito = require("./carritoMongo.js")
 const logger = require("../logger.js")
 const bcrypt = require('bcrypt');
 const nodemailer = require("nodemailer")
-
+const twilio = require("twilio")
 
 const transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
@@ -229,6 +229,20 @@ router.get('/compra', async(req, res) => {
     const usuarioBd = arrayBD.filter((el)=> (el.nombre == nom ))
     const emailBD = usuarioBd.map((el)=> (el.email))
     const carritoBD =  await Carrito.find({})
+    const twilioMsn = twilio("AC5a319eb0214eab690f30f1e537d54a2e", "16c03dda3ba2f0f5b946ea3d958201ec")
+    
+    twilioMsn.messages.create({
+        body: `Nuevo pedido de ${nom} ${emailBD}`,
+        from:"whatsapp:+14155238886",
+        to:"whatsapp:+5493517572019"
+    })
+
+    twilioMsn.messages.create({
+        body: "Su pedido ha sido recibido y se encuentra en proceso",
+        from:"+13856005469",
+        to:"+543517572019"
+    })
+
 const transporter = nodemailer.createTransport({
     host: 'smtp.ethereal.email',
     port: 587,
@@ -244,7 +258,7 @@ transporter.sendMail({
     subject: `Nuevo pedido de ${nom} ${emailBD}`,
     html: `${carritoBD}`
 })
-    res.send("Mail enviado")
+    res.render("compra", {name:nom})
 
  })
 
