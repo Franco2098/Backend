@@ -1,39 +1,34 @@
 {
-  "name": "practica",
+  "type": "module",
+  "name": "entregable",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Franco2098/Backend.git"
+    "start": "nodemon src/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/Franco2098/Backend/issues"
-  },
-  "homepage": "https://github.com/Franco2098/Backend#readme",
   "dependencies": {
-    "@faker-js/faker": "^7.3.0",
-    "@handlebars/allow-prototype-access": "^1.0.5",
-    "bcrypt": "^5.0.1",
+    "@faker-js/faker": "^7.4.0",
     "compression": "^1.7.4",
     "connect-mongo": "^4.6.0",
     "dotenv": "^16.0.1",
-    "express": "^4.17.3",
-    "express-handlebars": "^6.0.5",
+    "express": "^4.17.1",
+    "express-handlebars": "^6.0.6",
     "express-session": "^1.17.3",
+    "firebase-admin": "^9.11.0",
     "forever": "^4.0.3",
-    "mongoose": "^6.4.4",
-    "nodemailer": "^6.7.8",
+    "knex": "^0.95.10",
+    "mongodb": "^3.6.11",
+    "mongoose": "^5.13.7",
+    "mysql": "^2.18.1",
+    "normalizr": "^3.6.2",
     "passport": "^0.6.0",
     "passport-local": "^1.0.0",
-    "twilio": "^3.80.1",
+    "socket.io": "^4.5.1",
+    "sqlite3": "^5.0.2",
     "winston": "^3.8.1",
     "yargs": "^17.5.1"
   }
