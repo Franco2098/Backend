@@ -12,10 +12,12 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import {cpus} from "os"
 import dotenv from "dotenv"
-import contenedor from "./persistencia/contenedores/contenedorKnex.js";
-import config from "./persistencia/config.js"
 import {Server} from "socket.io"
+import Factory from "./persistencia/contenedores/factory.js"
 dotenv.config()
+
+const productos = Factory.crearDaoProductos()
+const mensajes = Factory.crearDaoMensajes()
 
 const numCPUs = cpus().length
 const __filename = fileURLToPath(import.meta.url);
@@ -27,8 +29,6 @@ let arrayP = []
 let arrayM = []
 let id = 1
 
-const contenedor2 = new contenedor(config.mariaDb,"mensajes")
-const contenedor1 = new contenedor(config.mariaDb,"productos")
 
 if (MODO_CLUSTER && cluster.isMaster) {
     console.log(`Master ${process.pid} is running`)
@@ -71,7 +71,7 @@ const io = new Server(server)
 io.on("connection", (socket) =>{
     
     socket.on("dataChat", (data) =>{
-        contenedor2.save(data).then( ()=> console.log("Mensaje añadido"));
+        mensajes.save(data).then( ()=> console.log("Mensaje añadido"));
         data = {...data, id: id++}
         arrayM.push(data)
         io.sockets.emit("mensaje", arrayM);
@@ -79,7 +79,7 @@ io.on("connection", (socket) =>{
     });
 
     socket.on("dataProduct", (data) =>{
-        contenedor1.save(data).then( ()=> console.log("Producto añadido"));
+        productos.save(data).then( ()=> console.log("Producto añadido"));
         arrayP.push(data)
         io.sockets.emit("productos", arrayP);
     });

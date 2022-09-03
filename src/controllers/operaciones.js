@@ -1,4 +1,3 @@
-import passport from "passport"
 import {nom, info, desloguear} from "../services/operaciones.js"
 import {actualizar, borrar, borrarTodos, guardar, guardarFaker, mostrar, mostrarId} from "../persistencia/operaciones.js"
 
@@ -29,7 +28,7 @@ export const errorLogin = async(req, res) => {
     }
 
 export const mostrar1 = async(req, res) => {
-    mostrar(res)
+    await mostrar(res)
     }
     
 export const mostrarId1 = async(req, res) => {

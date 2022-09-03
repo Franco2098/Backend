@@ -49,6 +49,4 @@ router.post("/login", passport.authenticate("login", {
 }))
 
 
-
-
 export default router

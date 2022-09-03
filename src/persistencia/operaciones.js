@@ -1,24 +1,22 @@
-import contenedor from "./contenedores/contenedorKnex.js";
-import config from "./config.js"
+import Factory from "../persistencia/contenedores/factory.js"
 import {faker} from "@faker-js/faker"
 
 
-const contenedor1 = new contenedor(config.mariaDb, "productos")
+const productos = Factory.crearDaoProductos()
+
 
 export async function mostrar(res){
-    contenedor1.getAll(res)
+    productos.getAll().then( (obj)=> res.send(obj))
+    
 }
 
 export async function mostrarId(req,res){
-    if(!isNaN(req.params.id)){
-        contenedor1.getById(req.params.id, res)
-    }else{
-        res.send("Parametro ingresado incorrecto")
-    }
+        productos.getById(req.params.id).then( (obj)=> res.send(obj))
+    
 }
 
 export async function guardar(req,res){
-    contenedor1.save(req.body).then( ()=> res.send("Producto añadido"))
+    productos.save(req.body).then( ()=> res.send("Producto añadido"))
 }
 
 export async function guardarFaker(req,res){
@@ -27,24 +25,21 @@ export async function guardarFaker(req,res){
         price: faker.commerce.price(),
         thumbnail: faker.image.business()
         }
-        contenedor1.save(obj)
+        productos.save(obj)
         res.send("Productos añadidos")
     }
 }
 
 export async function actualizar(req,res){
-    contenedor1.update(req,res).then( ()=> res.send("Producto actualizado"))
+    productos.update(req,res).then( ()=> res.send("Producto actualizado"))
 }
 
 export async function borrar(req,res){
-    if(!isNaN(req.params.id)){
-        contenedor1.deleteById(req.params.id, res)
-    }else{
-        res.send("Parametro ingresado incorrecto")
-    }
+    productos.deleteById(req.params.id).then( ()=> res.send("Producto eliminado"))
+    
 }
 
 export async function borrarTodos(req,res){
-    contenedor1.deleteAll(res)
+    productos.deleteAll().then( ()=> res.send("Productos eliminados"))
 }
 
