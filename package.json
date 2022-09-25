@@ -1,9 +1,9 @@
 {
   "type": "module",
-  "name": "entregable",
+  "name": "koa",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.js",
+  "main": "index.js",
   "scripts": {
     "start": "nodemon src/server.js"
   },
@@ -11,25 +11,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@faker-js/faker": "^7.4.0",
+    "@faker-js/faker": "^7.5.0",
+    "@graphql-tools/schema": "^9.0.4",
     "compression": "^1.7.4",
-    "connect-mongo": "^4.6.0",
-    "dotenv": "^16.0.1",
-    "express": "^4.17.1",
-    "express-handlebars": "^6.0.6",
-    "express-session": "^1.17.3",
-    "firebase-admin": "^9.11.0",
-    "forever": "^4.0.3",
-    "knex": "^0.95.10",
-    "mongodb": "^3.6.11",
-    "mongoose": "^5.13.7",
+    "dotenv": "^16.0.2",
+    "knex": "^2.3.0",
+    "koa": "^2.13.4",
+    "koa-body": "^5.0.0",
+    "koa-router": "^12.0.0",
     "mysql": "^2.18.1",
-    "normalizr": "^3.6.2",
-    "passport": "^0.6.0",
-    "passport-local": "^1.0.0",
-    "socket.io": "^4.5.1",
-    "sqlite3": "^5.0.2",
-    "winston": "^3.8.1",
-    "yargs": "^17.5.1"
+    "sqlite3": "^5.1.1"
   }
 }

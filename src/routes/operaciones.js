@@ -1,9 +1,11 @@
-import {Router} from "express"
+import Router from "koa-router"
 import compression from "compression"
 import passport from "passport"
 import {registro1, login1, formulario, logout, errorRegistro, errorLogin, mostrar1, mostrarId1, info1, guardar1, guardarFaker1, actualizar1, borrar1, borrarTodos1, logout1} from "../controllers/operaciones.js"
 
-const router = Router()
+const router = new Router({
+    prefix:"/api"
+})
 
 
 router.get('/registro', registro1)

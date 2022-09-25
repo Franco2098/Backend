@@ -27,42 +27,46 @@ export const errorLogin = async(req, res) => {
     res.render("errorLogin")
     }
 
-export const mostrar1 = async(req, res) => {
-    await mostrar(res)
+export const mostrar1 = async (ctx) => {
+    await mostrar(ctx)
     }
     
-export const mostrarId1 = async(req, res) => {
-    mostrarId(req,res)
+export const mostrarId1 = async(ctx) => {
+    await mostrarId(ctx)
     }
 
-export const info1 = async (req,res) => {
+export const info1 = async (ctx) => {
     let inf = await info()
-    res.send(inf)
+    ctx.body = {
+        inf
+    }
 }
 
-export const infoZip = async (req,res) => {
+export const infoZip = async (ctx) => {
     let inf = await info()
-    res.send(inf)
+    ctx.body = {
+        inf
+    }
 }
 
-export const guardar1 = async(req, res) => {
-    guardar(req,res)
+export const guardar1 = async(ctx) => {
+    await guardar(ctx)
     }
 
-export const guardarFaker1 = async(req, res) => {
-    guardarFaker(req,res)
+export const guardarFaker1 = async(ctx) => {
+    await guardarFaker(ctx)
     }
 
-export const actualizar1 = async(req, res) => {
-    actualizar(req,res)
+export const actualizar1 = async(ctx) => {
+    await actualizar(ctx)
     }
 
-export const borrar1 = async(req, res) => {
-    borrar(req,res)
+export const borrar1 = async(ctx) => {
+    await borrar(ctx)
     }
 
-export const borrarTodos1 = async(req, res) => {
-    borrarTodos(req,res)
+export const borrarTodos1 = async(ctx) => {
+    await borrarTodos(ctx)
     }
 
 export const logout1 = async(req, res) => {

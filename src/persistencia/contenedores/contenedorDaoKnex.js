@@ -17,30 +17,29 @@ class contenedor {
     }
 
     async getById(id) {
-            return this.knex.from(this.tabla).select("*").where({id: id})
-            
-        }
+       return this.knex.from(this.tabla).select("*").where({id: id})       
+    }
 
     async getAll(){
         return this.knex.from(this.tabla).select("*")
-        }
+    }
 
-    async update(req){
+    async update(ctx){
         this.knex.from(this.tabla).select("*")
-        .where({id: req.params.id})
-        .update({name: req.body.name, price: req.body.price})
+        .where({id: ctx.params.id})
+        .update({name: ctx.request.body.name, price: ctx.request.body.price})
         
     }
     
     async deleteById(id){
-        this.knex(this.tabla)
+        return this.knex.from(this.tabla).select("*")
         .where({id: id})
         .del()
         
     }
 
     async deleteAll(){
-        this.knex(this.tabla)
+        return this.knex.from(this.tabla)
         .del()
     }
 

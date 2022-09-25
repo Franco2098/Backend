@@ -7,7 +7,8 @@ class contenedorMongoDb {
     async save (obj){
         try {
         const nuevo = new this.tabla(obj)
-        nuevo.save()   
+        nuevo.save()
+        return obj   
         }        
         catch(err){
             console.log("error")
