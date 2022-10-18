@@ -1,56 +1,89 @@
-<form action="/logout" method="get">
+<link rel="stylesheet" href="/styles1.css">
+
+<form action="/logout" method="get" style="margin-block: 50px">
 <div>
-        <h1>Bienvenido {{this.name}}</h1>
+        <h3>Bienvenido {{this.name}}</h3>
         <ul>
-        <li class="button">
-            <button type="submit">Desloguear</button>
-        </li>
+        
+            <button type="submit" class="btn btn-success" style="margin-left: 127px">Desloguear</button>
+        
         </ul>
 </div>
 </form>
 
-<form onsubmit="addInfo1(); return false">
-        <h1>INGRESE UN PRODUCTO</h1>
+<form action="/productos" enctype="multipart/form-data" method="post">
+        <h3>INGRESE UN PRODUCTO</h3>
         <ul>
-         <li>
-           <label for="name">Nombre:</label>
-           <input type="text" id="name" name="name">
-         </li>
-         <li>
-           <label for="price">Precio:</label>
-           <input type="text" id="price" name="price">
-         </li>
-         <li>
-           <label for="thumbnail">url:</label>
-           <input type="text" id="thumbnail" name="thumbnail">
-         </li>
-         <li class="button">
-            <button type="submit">Enviar datos</button>
-        </li>
+           <div class="mb-3">
+           <label for="nombre" class="form-label">Nombre:</label>
+           <input type="text" id="nombre" name="nombre" class="form-control">
+         </div>
+         <div class="mb-3">
+           <label for="plataforma" class="form-label">Plataformas:</label>
+           <input type="array" id="plataforma" name="plataforma" class="form-control">
+           <input type="array" id="plataforma" name="plataforma" class="form-control">
+           <input type="array" id="plataforma" name="plataforma" class="form-control">
+         </div>
+         <div class="mb-3">
+           <label for="precio" class="form-label">Precio:</label>
+           <input type="number" id="precio" name="precio" class="form-control">
+         </div>
+         <div class="mb-3">
+           <label for="categoria" class="form-label">Categoria:</label>
+           <input type="text" id="categoria" name="categoria" class="form-control">
+         </div>
+         <div class="mb-3">
+           <label for="imagen" class="form-label">Imagen:</label>
+           <input type="file" id="imagen" name="imagen" class="form-control">
+         </div>
+        
+            <button type="submit" class="btn btn-success">Enviar datos</button>
+        
         </ul>
 
        </form>
 
-       <div id="productos">
-        <h1>LISTA DE PRODUCTOS</h1>
-    <div id="product"></div>
-    </div>
 
-<form onsubmit="addInfo(); return false">
-        <h1>CENTRO DE MENSAJES</h1>
-        <input type="text" id="nb" name="" placeholder="Email">
-        <input type="text" id="nm" name="" placeholder="Nombre">
-        <input type="text" id="ln" name="" placeholder="Apellido">
-        <input type="text" id="ag" name="" placeholder="Edad">
-        <input type="text" id="al" name="" placeholder="Alias">
-        <input type="text" id="av" name="" placeholder="Logo de usuario">
-        <input type="text" id="msn" name="" placeholder="Mensaje">
-        <input type="submit" value="Enviar">
+<form action="/buscarProducto"  method="get" style="margin-block: 50px">
+        <h3>BUSCAR UN PRODUCTO</h3>
+        <ul>
+           <div class="mb-3">
+           <label for="id" class="form-label">Id del producto:</label>
+           <input type="text" id="id" name="id" class="form-control">
+         </div>
+            <button type="submit" class="btn btn-success">Buscar producto</button>
+        
+        </ul>
+
        </form>
 
-<div id="mensajes">
-        <h1>CHAT</h1>
-    <div id="chat"></div>
-    </div>
+<form>
+        <ul>
+           <div class="mb-3">
+           <label for="nombre" class="form-label">Nombre:</label>
+           <label type="text" id="nombre" name="nombre" class="form-control" style = "height: 35px">{{this.nombre}}</label>
+         </div>
+         <div class="mb-3">
+           <label for="plataforma" class="form-label">Plataformas:</label>
+           <label type="array" id="plataforma" name="plataforma" class="form-control" style = "height: 35px" >{{this.plat1}}</label> 
+           <label type="array" id="plataforma" name="plataforma" class="form-control" style = "height: 35px">{{this.plat2}}</label>
+           <label type="array" id="plataforma" name="plataforma" class="form-control" style = "height: 35px">{{this.plat3}}</label>
+         </div>
+         <div class="mb-3">
+           <label for="precio" class="form-label">Precio:</label>
+           <label type="number" id="precio" name="precio" class="form-control" style = "height: 35px">{{this.precio}}</label>
+         </div>
+         <div class="mb-3">
+           <label for="categoria" class="form-label">Categoria:</label>
+           <label type="text" id="categoria" name="categoria" class="form-control" style = "height: 35px">{{this.categoria}}</label>
+         </div>
+         <div class="mb-3">
+           <label for="imagen" class="form-label">Ruta:</label>
+           <label type="text" id="imagen" name="imagen" class="form-control" style = "height: 35px"></label>
+         </div>
+        </ul>
+
+       </form>
+  
 
 

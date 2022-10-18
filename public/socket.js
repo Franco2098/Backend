@@ -1,5 +1,6 @@
 const socket = io();
 
+
 let date = new Date();
 let output = String(date.getDate()).padStart(2, '0') + '/' + String(date.getMonth() + 1).padStart(2, '0') + '/' + date.getFullYear();
 
@@ -23,11 +24,6 @@ const render = (data) => {
 const addInfo = () => {
     let dataObj = {
         email: document.querySelector("#nb").value,
-        name: document.querySelector("#nm").value,
-        lastname: document.querySelector("#ln").value, 
-        age: document.querySelector("#ag").value, 
-        alias: document.querySelector("#al").value, 
-        avatar: document.querySelector("#av").value, 
         msn: document.querySelector("#msn").value
     };
     socket.emit("dataChat", dataObj);
@@ -59,4 +55,88 @@ const addInfo1 = () => {
     document.querySelector("#thumbnail").value = ""
 };
 
+socket.on("productosCarrito", (arrayPrinc, dataCarrito,data) => {
+    AñadirCarrito(arrayPrinc,dataCarrito,data)
+   })
 
+
+const Carrito = (data) => {
+    socket.emit("dataProductCarrito",data);
+}
+
+
+let elimCarro = document.getElementsByClassName("btn btn-secondary");
+for (cart of elimCarro) {
+cart.addEventListener("click", e => {
+    location.href = "/carrito"
+    })}
+
+
+let carro = document.getElementsByClassName("btn btn-primary");
+
+
+const AñadirCarrito = (productos, carrito, data) => {
+   const selected = productos.find(product => product._id == data);
+    socket.emit("dataGuardarCarrito",selected);
+    let contador = document.getElementById("lengthCarrito");
+    contador.innerHTML = carrito.length + 1
+    }
+
+
+const eliminarProduct = (data) => {
+    socket.emit("elimProductCarrito",data);
+ }
+
+let categoria = document.getElementsByClassName("dropdown-item");
+  
+
+const filtro = (data) => {
+    socket.emit("filtroProduct",data);
+}
+
+socket.on("filtroProductos", (data) => {
+    filtroP(data)
+   })
+
+const filtroP = (data) => {
+  $("#productStyle").empty();
+  if(data.length > 0){
+    let html = data.map((product) =>{
+    return `
+    <div class="card" style="width: 18rem;">
+    <div class="imagen">
+      <img src= ${product.imagen} class="card-img-top" alt="...">
+    </div>
+    <div class="card-body">
+      <h5 class="card-title">${product.nombre}</h5>
+    </div>
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">Precio: $${product.precio}</li>
+      <li class="list-group-item">Plataforma: ${product.plataforma.join("/")}</li>
+      <li class="list-group-item">Categoria: ${product.categoria}</li>
+      <button id= "boton${product.id}" href="#" class="btn btn-primary">Añadir al Carrito</button>
+    </ul>
+  </div>
+    `
+    }).join(" ");
+    document.querySelector("#productStyle").innerHTML = html;
+    }else{
+        let html = 
+             `
+        <div id= "error" >
+        <img src= "/asset/remove.png">
+        <h1> NO SE ENCONTRO NINGUN PRODUCTO</h1>
+        </div> `
+        document.querySelector("#productStyle").innerHTML = html;
+
+}
+    
+}
+
+
+let buscar = document.getElementById("buscador2");
+buscar.addEventListener("click", () => {
+    let teclado = document.getElementById("buscador");
+    socket.emit("busquedaProduct",teclado.value);
+    
+})

@@ -1,28 +1,27 @@
-import contenedorDaoKnex from "./contenedorDaoKnex.js"
 import contenedorDaoMongo from "./contenedorDaoMongo.js"
-
-import config from "../config.js"
 
 const option = process.argv[2]
 let productosDao
 let mensajesDao
 let usuariosDao
+let carritoDao
 
 import Usuarios from "../user.js"
 import Mensajes from "../mensajes.js"
 import Productos from "../productos.js"
+import Carrito from "../carritoMongo.js"
 
 
 switch(option){
     case "knex":
-        productosDao = new contenedorDaoKnex(config.mariaDb,"productos")
-        mensajesDao = new contenedorDaoKnex(config.mariaDb,"mensajes")       
+        //Al final solo trabaje con la base de datos de mongo      
         break;
         
     default:
         productosDao = new contenedorDaoMongo(Productos)
         mensajesDao = new contenedorDaoMongo(Mensajes)
         usuariosDao = new contenedorDaoMongo(Usuarios)
+        carritoDao = new contenedorDaoMongo(Carrito)
 
 }
 
@@ -35,5 +34,8 @@ export default class Factory {
     }
     static crearDaoUsuarios(){
         return usuariosDao
+    }
+    static crearDaoCarrito(){
+        return carritoDao
     }
 }

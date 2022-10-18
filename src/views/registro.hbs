@@ -1,21 +1,41 @@
-<form action="/registro" method="post">
+<link rel="stylesheet" href="/styles1.css">
+<form action="/registro" method="post"  style="margin-block: 40px">
 
-<h1>Registro de Usuario</h1>
+<h3>Registro de Usuario</h3>
         <ul>
-         <li>
-           <label for="name">Nombre:</label>
-           <input type="text" id="nombre" name="nombre">
-         </li>
-         <li>
-           <label for="name">Contraseña:</label>
-           <input type="text" id="contraseña" name="contraseña">
-         </li>
-         <li class="button">
-            <li class="button">
-            <button type="submit">Registrarse</button>
-        </li>
+         <div class="mb-3">
+           <label for="name" class="form-label">Nombre:</label>
+           <input type="text" class="form-control" id="nombre" name="nombre">
+         </div>
+         <div class="mb-3">
+           <label for="email" class="form-label">Email:</label>
+           <input type="text" class="form-control" id="email" name="email">
+         </div>
+         <div class="mb-3">
+           <label for="edad" class="form-label">Edad:</label>
+           <input type="number" class="form-control" id="edad" name="edad">
+         </div>
+         <div class="mb-3">
+           <label for="tel" class="form-label">Telefono:</label>
+           <input type="number" class="form-control" id="tel" name="tel">
+         </div>
+         <div class="mb-3">
+           <label for="direccion" class="form-label">Direccion:</label>
+           <input type="text" class="form-control" id="direccion" name="direccion">
+         </div>
+         <div class="mb-3">
+           <label for="contraseña" class="form-label">Contraseña:</label>
+           <input type="text" class="form-control" id="contraseña" name="contraseña">
+         </div>
+         <div class="mb-3">
+           <label for="repetirContraseña" class="form-label">Repetir Contraseña:</label>
+           <input type="text" class="form-control" id="repetirContraseña" name="repetirContraseña">
+         </div>
+         
+            <button type="submit" class="btn btn-success">Registrarse</button>
+        
          </ul>
 
 </form>
 
-<button type="submit" onclick= "location.href='/login'">Ir al login</button>
+<button type="submit" onclick= "location.href='/login'" class="btn btn-success">Ir al login</button>

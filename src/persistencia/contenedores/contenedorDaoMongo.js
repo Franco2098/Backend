@@ -18,7 +18,7 @@ class contenedorMongoDb {
     async getById(id) {
         try {
             const array = await this.tabla.find({})
-            const objeto = array.filter((el)=> (el.id == id ))
+            const objeto = array.find((el)=> (el.id == id ))
             return objeto
             }        
             catch(err){
